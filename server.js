@@ -4,16 +4,16 @@ const app = express();
 // Middleware
 app.use(express.json());
 
-// Home Route (Fixes Cannot GET /)
+// Home Route (Fix Cannot GET /)
 app.get("/", (req, res) => {
   res.send("Patient Backend API is Running 🚀");
 });
 
-// Sample API Route
+// Sample API
 app.get("/patients", (req, res) => {
   res.json([
     { id: 1, name: "John", age: 22 },
-    { id: 2, name: "Sudheeksha", age: 19 }
+    { id: 2, name: "Sudheeksha", age: 20 }
   ]);
 });
 
