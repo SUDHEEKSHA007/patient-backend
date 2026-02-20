@@ -1,17 +1,12 @@
 {
   "name": "patient-backend",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Patient Backend API",
+  "main": "server.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "node server.js"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "dependencies": {
-    "body-parser": "^2.2.2",
-    "cors": "^2.8.6",
-    "express": "^5.2.1"
+    "express": "^5.0.0"
   }
 }
