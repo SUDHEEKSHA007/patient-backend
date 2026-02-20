@@ -1,52 +1,48 @@
 const express = require("express");
-const mongoose = require("mongoose");
-
 const app = express();
+const PORT = 3000;
+
+// Middleware to read JSON
 app.use(express.json());
 
-// ✅ CONNECT TO MONGODB
-mongoose.connect(process.env.MONGO_URI)
-.then(() => console.log("MongoDB Connected"))
-.catch(err => console.log(err));
+// Temporary in-memory database
+let patients = [
+  { id: 1, name: "John Doe", age: 25, disease: "Fever" },
+  { id: 2, name: "Priya", age: 30, disease: "Diabetes" }
+];
 
-// ✅ Patient Schema
-const PatientSchema = new mongoose.Schema({
-  name: String,
-  age: Number
-});
-
-const Patient = mongoose.model("Patient", PatientSchema);
-
-// ✅ Home Route
+// Home route
 app.get("/", (req, res) => {
-  res.send("Patient Backend API with MongoDB is Running 🚀");
+  res.send("Patient Backend API is Running 🚀");
 });
 
-// ✅ CREATE Patient
-app.post("/patients", async (req, res) => {
-  const patient = new Patient(req.body);
-  await patient.save();
-  res.send(patient);
-});
-
-// ✅ LIST Patients
-app.get("/patients", async (req, res) => {
-  const patients = await Patient.find();
+// ✅ GET all patients
+app.get("/patients", (req, res) => {
   res.json(patients);
 });
 
-// ✅ UPDATE Patient
-app.put("/patients/:id", async (req, res) => {
-  const updated = await Patient.findByIdAndUpdate(req.params.id, req.body, { new: true });
-  res.json(updated);
+// ✅ POST new patient
+app.post("/patients", (req, res) => {
+  const newPatient = {
+    id: patients.length + 1,
+    name: req.body.name,
+    age: req.body.age,
+    disease: req.body.disease
+  };
+
+  patients.push(newPatient);
+  res.json({ message: "Patient added successfully", patient: newPatient });
 });
 
-// ✅ DELETE Patient
-app.delete("/patients/:id", async (req, res) => {
-  await Patient.findByIdAndDelete(req.params.id);
-  res.send("Deleted");
+// ✅ DELETE patient by ID
+app.delete("/patients/:id", (req, res) => {
+  const id = parseInt(req.params.id);
+  patients = patients.filter(p => p.id !== id);
+
+  res.json({ message: "Patient deleted successfully" });
 });
 
-// ✅ PORT FIX FOR CLOUD
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log("Server running on port", PORT));
+// Start server
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
