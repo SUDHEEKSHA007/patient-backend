@@ -39,8 +39,9 @@ Creates a new patient record.
   "gender": "male",
   "disease": "fever"
 }
-
+```
 Response:
+```
 {
   "message": "Patient created successfully",
   "patient": {
